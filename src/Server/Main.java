@@ -1,21 +1,20 @@
 package Server;
 
-
-
-import java.awt.Color;
-import java.io.File;
-import java.net.ServerSocket;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 
 public class Main extends javax.swing.JFrame {
 
-    public Main() {
+    String username = "root";
+    public static Connection con = null;
+
+    public Main() throws ClassNotFoundException, SQLException {
         initComponents();
+
     }
 
     @SuppressWarnings("unchecked")
@@ -81,28 +80,32 @@ public class Main extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-
     private void startServer() throws Exception {
-        Registry reg=LocateRegistry .createRegistry(10008);
-   ChatService service=new ChatService();
-   reg.rebind(serverInterfaces.ChatInterface.LOOKUP_NAME,service);
+        Registry reg = LocateRegistry.createRegistry(10008);
+        ChatService service = new ChatService();
+        reg.rebind(serverInterfaces.ChatInterface.LOOKUP_NAME, service);
+
     }
 
-    
+    public static Connection getCon() throws Exception {
+        return con;
+
+    }
+
     private void StartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartButtonActionPerformed
         try {
             startServer();
             ServerStatus.setText("<html><font color='green'>server started now!!</font></html>\"");
             this.StartButton.setEnabled(false);
-            
+
         } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
-      
+
     }//GEN-LAST:event_StartButtonActionPerformed
 
     private void cmdStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdStopActionPerformed
-     System.exit(0);
+        System.exit(0);
     }//GEN-LAST:event_cmdStopActionPerformed
 
     public static void main(String args[]) {
@@ -126,7 +129,14 @@ public class Main extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new Main().setVisible(true);
+                try {
+                    new Main().setVisible(true);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
             }
         });
     }

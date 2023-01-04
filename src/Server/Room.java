@@ -7,15 +7,32 @@ package Server;
 import clientInterfaces.clientInterface;
 
 
+
+import java.util.ArrayList;
 public class Room {
   private String room;
   private clientInterface owner;
   private int roomNumber;
+private ArrayList<clientInterface>members;
+    public Room(String room, clientInterface owner, int roomNumber, ArrayList<clientInterface> members) {
+        this.room = room;
+        this.owner = owner;
+        this.roomNumber = roomNumber;
+        this.members = members;
+    }
+
+    public ArrayList<clientInterface> getMembers() {
+        return members;
+    }
 
     public Room(String room, clientInterface owner, int roomNumber) {
         this.room = room;
         this.owner = owner;
         this.roomNumber = roomNumber;
+    }
+
+    public void setMembers(ArrayList<clientInterface> members) {
+        this.members = members;
     }
 
     public int getRoomNumber() {
